@@ -83,7 +83,7 @@ const Contact = () => {
               </a>
               
               <a 
-                href="https://www.linkedin.com/in/nivodhit" 
+                href="https://www.linkedin.com/in/nivodhit-malik-18551223b/" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="flex items-center group"
