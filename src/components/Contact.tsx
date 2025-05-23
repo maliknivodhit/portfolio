@@ -1,4 +1,4 @@
-
+import emailjs from '@emailjs/browser';
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Mail, Send, CheckCircle } from 'lucide-react';
@@ -19,20 +19,38 @@ const Contact = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  setIsSubmitting(true);
+  
+  try {
+    await emailjs.sendForm(
+      'service_kgb72dn',    // Replace with your service ID
+      'template_7d09jnv',   // Replace with your template ID
+      e.currentTarget,
+      'btxn-mmB7GVz9cZyo'     // Replace with your public key
+    );
     
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSubmitted(true);
-      setFormData({ name: '', email: '', message: '' });
-      
-      toast({
-        title: "Message sent!",
-        description: "Thank you for reaching out. I'll get back to you soon.",
-      });
+    setIsSubmitting(false);
+    setIsSubmitted(true);
+    setFormData({ name: '', email: '', message: '' });
+    
+    toast({
+      title: "Message sent!",
+      description: "Thank you for reaching out. I'll get back to you soon.",
+    });
+    
+    // Reset submission status after a delay
+    setTimeout(() => setIsSubmitted(false), 5000);
+  } catch (error) {
+    setIsSubmitting(false);
+    toast({
+      title: "Error!",
+      description: "Failed to send message. Please try again later.",
+      variant: "destructive",
+    });
+  }
+};
       
       // Reset submission status after a delay
       setTimeout(() => setIsSubmitted(false), 5000);
@@ -131,7 +149,7 @@ const Contact = () => {
                   <input
                     type="text"
                     id="name"
-                    name="name"
+                    name="user_name"
                     value={formData.name}
                     onChange={handleChange}
                     required
@@ -147,7 +165,7 @@ const Contact = () => {
                   <input
                     type="email"
                     id="email"
-                    name="email"
+                    name="user_email"
                     value={formData.email}
                     onChange={handleChange}
                     required
