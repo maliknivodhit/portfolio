@@ -1,8 +1,8 @@
-import emailjs from '@emailjs/browser';
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Mail, Send, CheckCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import emailjs from '@emailjs/browser';
 
 const Contact = () => {
   const { toast } = useToast();
@@ -20,41 +20,43 @@ const Contact = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-  setIsSubmitting(true);
-  
-  try {
-    await emailjs.sendForm(
-      'service_kgb72dn',    // Replace with your service ID
-      'template_7d09jnv',   // Replace with your template ID
-      e.currentTarget,
-      'btxn-mmB7GVz9cZyo'     // Replace with your public key
-    );
-    
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    setFormData({ name: '', email: '', message: '' });
-    
-    toast({
-      title: "Message sent!",
-      description: "Thank you for reaching out. I'll get back to you soon.",
-    });
-    
-    // Reset submission status after a delay
-    setTimeout(() => setIsSubmitted(false), 5000);
-  } catch (error) {
-    setIsSubmitting(false);
-    toast({
-      title: "Error!",
-      description: "Failed to send message. Please try again later.",
-      variant: "destructive",
-    });
-  }
-};
-      
-      // Reset submission status after a delay
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    const templateParams = {
+      from_name: formData.name,
+      from_email: formData.email,
+      message: formData.message,
+      to_name: 'Nivodhit',
+    };
+
+    try {
+      await emailjs.send(
+        'service_kgb72dn',        // ✅ Your Service ID
+        'template_brqs99m',       // ✅ Your Template ID
+        templateParams,
+        'btxn-mmB7GVz9cZyo'       // ✅ Your Public Key
+      );
+
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+      setFormData({ name: '', email: '', message: '' });
+
+      toast({
+        title: 'Message sent!',
+        description: "Thank you for reaching out. I'll get back to you soon.",
+      });
+
       setTimeout(() => setIsSubmitted(false), 5000);
-    }, 1500);
+    } catch (error: any) {
+      console.error('EmailJS error:', error);
+      toast({
+        title: 'Error!',
+        description: `Failed to send message. ${error?.text || 'Please try again later.'}`,
+        variant: 'destructive',
+      });
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -62,7 +64,7 @@ const Contact = () => {
       <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-background/90 to-transparent"></div>
       <div className="absolute top-1/3 left-1/4 w-1/4 h-1/4 bg-neon-blue/5 rounded-full filter blur-3xl"></div>
       <div className="absolute bottom-1/3 right-1/4 w-1/3 h-1/3 bg-neon-purple/5 rounded-full filter blur-3xl"></div>
-      
+
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 section-p">Get In <span className="text-gradient">Touch</span></h2>
@@ -71,7 +73,7 @@ const Contact = () => {
             Have a question or want to work together? Feel free to contact me through the form below or connect with me on social media.
           </p>
         </div>
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -81,16 +83,13 @@ const Contact = () => {
             className="space-y-8"
           >
             <h3 className="text-2xl font-bold">Contact Information</h3>
-            
+
             <p className="text-muted-foreground">
               I'm currently open to new opportunities, collaborations, and interesting projects. Let's connect and discuss how we can work together!
             </p>
-            
+
             <div className="space-y-4">
-              <a 
-                href="mailto:maliknivodhit@gmail.com" 
-                className="flex items-center group"
-              >
+              <a href="mailto:maliknivodhit@gmail.com" className="flex items-center group">
                 <div className="p-3 bg-secondary/30 rounded-full mr-4 group-hover:bg-primary/20 transition-colors">
                   <Mail size={20} className="text-primary" />
                 </div>
@@ -99,13 +98,8 @@ const Contact = () => {
                   <p className="font-medium group-hover:text-primary transition-colors">maliknivodhit@gmail.com</p>
                 </div>
               </a>
-              
-              <a 
-                href="https://www.linkedin.com/in/nivodhit-malik-18551223b/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex items-center group"
-              >
+
+              <a href="https://www.linkedin.com/in/nivodhit-malik-18551223b/" target="_blank" rel="noopener noreferrer" className="flex items-center group">
                 <div className="p-3 bg-secondary/30 rounded-full mr-4 group-hover:bg-primary/20 transition-colors">
                   <Linkedin size={20} className="text-primary" />
                 </div>
@@ -114,13 +108,8 @@ const Contact = () => {
                   <p className="font-medium group-hover:text-primary transition-colors">Nivodhit</p>
                 </div>
               </a>
-              
-              <a 
-                href="https://github.com/maliknivodhit" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex items-center group"
-              >
+
+              <a href="https://github.com/maliknivodhit" target="_blank" rel="noopener noreferrer" className="flex items-center group">
                 <div className="p-3 bg-secondary/30 rounded-full mr-4 group-hover:bg-primary/20 transition-colors">
                   <Github size={20} className="text-primary" />
                 </div>
@@ -131,7 +120,7 @@ const Contact = () => {
               </a>
             </div>
           </motion.div>
-          
+
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -140,16 +129,14 @@ const Contact = () => {
           >
             <form onSubmit={handleSubmit} className="glass-card rounded-xl p-6 md:p-8">
               <h3 className="text-2xl font-bold mb-6">Send Me a Message</h3>
-              
+
               <div className="space-y-5">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium mb-2">
-                    Your Name
-                  </label>
+                  <label htmlFor="name" className="block text-sm font-medium mb-2">Your Name</label>
                   <input
                     type="text"
                     id="name"
-                    name="user_name"
+                    name="name"
                     value={formData.name}
                     onChange={handleChange}
                     required
@@ -157,15 +144,13 @@ const Contact = () => {
                     placeholder="John Doe"
                   />
                 </div>
-                
+
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium mb-2">
-                    Your Email
-                  </label>
+                  <label htmlFor="email" className="block text-sm font-medium mb-2">Your Email</label>
                   <input
                     type="email"
                     id="email"
-                    name="user_email"
+                    name="email"
                     value={formData.email}
                     onChange={handleChange}
                     required
@@ -173,11 +158,9 @@ const Contact = () => {
                     placeholder="john@example.com"
                   />
                 </div>
-                
+
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium mb-2">
-                    Your Message
-                  </label>
+                  <label htmlFor="message" className="block text-sm font-medium mb-2">Your Message</label>
                   <textarea
                     id="message"
                     name="message"
@@ -189,7 +172,7 @@ const Contact = () => {
                     placeholder="Hello Nivodhit, I'd like to discuss a project..."
                   ></textarea>
                 </div>
-                
+
                 <motion.button
                   type="submit"
                   disabled={isSubmitting || isSubmitted}
