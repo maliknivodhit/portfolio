@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Github, Linkedin, Mail, Send, CheckCircle } from "lucide-react";
 import emailjs from "@emailjs/browser";
@@ -18,6 +18,11 @@ const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  // Initialize EmailJS
+  useEffect(() => {
+    emailjs.init(process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "");
+  }, []);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -29,19 +34,36 @@ const Contact = () => {
 
     const { name, email, message } = formData;
 
+    // Check if environment variables are set
+    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+
+    if (!serviceId || !templateId || !publicKey) {
+      console.error("EmailJS environment variables are not configured");
+      toast({
+        title: "Configuration Error!",
+        description: "Email service is not properly configured. Please contact the administrator.",
+        variant: "destructive",
+      });
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
-      await emailjs.send(
-        process.env.service_kgb72dn,
-        process.env.template_09e8s2a,
+      const result = await emailjs.send(
+        serviceId,
+        templateId,
         {
           from_name: name,
           from_email: email,
           message: message,
           to_name: "Nivodhit",
         },
-        process.env.btxn-mmB7GVz9cZyo
+        publicKey
       );
 
+      console.log("Email sent successfully:", result);
       setIsSubmitted(true);
       setFormData({ name: "", email: "", message: "" });
       toast({
@@ -162,4 +184,3 @@ const Contact = () => {
 };
 
 export default Contact;
-
