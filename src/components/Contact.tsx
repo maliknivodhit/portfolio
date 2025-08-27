@@ -31,15 +31,15 @@ const Contact = () => {
 
     try {
       await emailjs.send(
-        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
-        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+        process.env.service_kgb72dn,
+        process.env.template_09e8s2a,
         {
           from_name: name,
           from_email: email,
           message: message,
           to_name: "Nivodhit",
         },
-        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
+        process.env.btxn-mmB7GVz9cZyo
       );
 
       setIsSubmitted(true);
