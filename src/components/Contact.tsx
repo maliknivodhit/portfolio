@@ -123,38 +123,41 @@ const Contact = () => {
             transition={{ duration: 0.5 }}
           >
             <div>
-              <label className="block mb-2">Your Name</label>
+              <label className="block mb-2 text-white font-medium">Your Name</label>
               <input
                 type="text"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
+                placeholder="Enter your full name"
                 required
-                className="w-full px-4 py-2 border border-border rounded-lg"
+                className="w-full px-4 py-3 border border-gray-600 rounded-lg bg-gray-900 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
               />
             </div>
 
             <div>
-              <label className="block mb-2">Your Email</label>
+              <label className="block mb-2 text-white font-medium">Your Email</label>
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
+                placeholder="Enter your email address"
                 required
-                className="w-full px-4 py-2 border border-border rounded-lg"
+                className="w-full px-4 py-3 border border-gray-600 rounded-lg bg-gray-900 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
               />
             </div>
 
             <div>
-              <label className="block mb-2">Your Message</label>
+              <label className="block mb-2 text-white font-medium">Your Message</label>
               <textarea
                 name="message"
                 rows={5}
                 value={formData.message}
                 onChange={handleChange}
+                placeholder="Type your message here..."
                 required
-                className="w-full px-4 py-2 border border-border rounded-lg"
+                className="w-full px-4 py-3 border border-gray-600 rounded-lg bg-gray-900 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 resize-none"
               />
             </div>
 
